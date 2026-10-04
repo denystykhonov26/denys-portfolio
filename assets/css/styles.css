@@ -350,9 +350,49 @@ button {
   justify-self: end;
 }
 
-.hero-intro > p {
-  margin: 0 0 1.5rem;
-  font-size: clamp(1rem, 1.35vw, 1.2rem);
+.hero-intro > p { margin-top: 0; }
+
+.hero-signature {
+  margin-bottom: 1.1rem;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.22;
+}
+
+.signature-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.signature-word {
+  position: relative;
+  display: inline-block;
+  animation: signature-reveal 600ms 520ms var(--ease-out) both;
+}
+
+.signature-mask:nth-of-type(2) .signature-word { animation-delay: 610ms; }
+
+.signature-word::after {
+  position: absolute;
+  right: 0;
+  bottom: 0.02em;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: signature-line 520ms 850ms var(--ease-out) forwards;
+}
+
+.signature-mask:nth-of-type(2) .signature-word::after { animation-delay: 940ms; }
+
+.hero-support {
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  font-size: clamp(0.92rem, 1.15vw, 1.05rem);
   letter-spacing: -0.025em;
   line-height: 1.5;
 }
@@ -391,6 +431,15 @@ button {
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(1.25rem); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes signature-reveal {
+  from { transform: translateY(105%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes signature-line {
+  to { transform: scaleX(1); }
 }
 
 /* Home projects */
@@ -553,6 +602,7 @@ button {
 
 .agent-art {
   width: min(100%, 19rem);
+  height: auto;
   aspect-ratio: 1;
   justify-self: center;
   border-radius: 50%;
@@ -561,20 +611,53 @@ button {
   transition: transform 800ms var(--ease-out);
 }
 
-.telegram-shot {
+.telegram-frame {
+  position: relative;
+  display: block;
   width: min(100%, 23rem);
-  max-height: 39rem;
   justify-self: center;
+  overflow: hidden;
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: 1.7rem;
-  object-fit: cover;
-  object-position: top;
   box-shadow: 0 2rem 5rem rgba(0,0,0,0.3);
   transition: transform 800ms var(--ease-out);
 }
 
+.telegram-shot {
+  display: block;
+  width: 100%;
+  max-height: 39rem;
+  object-fit: cover;
+  object-position: top;
+}
+
+.privacy-mask {
+  position: absolute;
+  inset: 10% 0 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  color: rgba(255,255,255,0.78);
+  background: rgba(18,18,18,0.78);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 1rem 1rem 0 0;
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+}
+
+.privacy-mask span {
+  padding: 0.55rem 0.75rem;
+  background: rgba(18,18,18,0.72);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .automation-visual:hover .agent-art { transform: rotate(-2deg) scale(1.02); }
-.automation-visual:hover .telegram-shot { transform: translateY(-0.5rem) rotate(1deg); }
+.automation-visual:hover .telegram-frame { transform: translateY(-0.5rem) rotate(1deg); }
 
 /* About preview and contact */
 .about-preview {
@@ -872,7 +955,8 @@ button {
 .case-cover--agent { min-height: min(60rem, 95svh); padding: clamp(3rem, 8vw, 8rem); color: var(--light); background: var(--dark); grid-template-columns: minmax(0, 0.75fr) minmax(18rem, 0.65fr); justify-content: center; }
 .case-cover--agent .flow-note { top: clamp(2rem, 4vw, 4rem); right: clamp(2rem, 4vw, 4rem); }
 .case-cover--agent .agent-art { width: min(100%, 26rem); }
-.case-cover--agent .telegram-shot { width: min(100%, 27rem); max-height: 47rem; }
+.case-cover--agent .telegram-frame { width: min(100%, 27rem); }
+.case-cover--agent .telegram-shot { max-height: 47rem; }
 
 .case-content { padding-block: var(--section); }
 
@@ -1015,7 +1099,7 @@ button {
 
 @media (max-width: 600px) {
   :root { --section: clamp(5.5rem, 24vw, 7rem); }
-  .site-header { backdrop-filter: blur(10px); }
+  .site-header { background: var(--paper); backdrop-filter: none; }
   .nav-list:not(.is-open) { gap: 0.75rem; }
   .nav-link { font-size: 0.68rem; }
 
@@ -1028,6 +1112,7 @@ button {
   .hero-role { grid-column: 1 / 5; font-size: clamp(2.25rem, 11.5vw, 3.2rem); }
   .hero-intro { grid-column: 2 / 5; margin-top: 1.75rem; padding-left: 1rem; border-left: 1px solid var(--line); }
   .hero-intro > p { font-size: 0.95rem; }
+  .project-visual { aspect-ratio: 1952 / 1269; }
   .hero-actions { align-items: flex-start; flex-direction: column; gap: 0.25rem; }
   .hero-foot { grid-template-columns: auto 1fr auto; gap: 0.6rem; margin-top: 1.5rem; font-size: 0.5rem; }
   .hero-foot { display: none; }
