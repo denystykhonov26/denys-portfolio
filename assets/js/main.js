@@ -4,6 +4,23 @@ const header = document.querySelector("[data-header]");
 const menuToggle = document.querySelector(".menu-toggle");
 const navigation = document.querySelector(".nav-list");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const finePointer = window.matchMedia("(pointer: fine)");
+
+const progress = document.createElement("div");
+progress.className = "scroll-progress";
+progress.setAttribute("aria-hidden", "true");
+document.body.prepend(progress);
+
+let progressFrame = 0;
+const updateScrollProgress = () => {
+  if (progressFrame) return;
+  progressFrame = requestAnimationFrame(() => {
+    const distance = document.documentElement.scrollHeight - window.innerHeight;
+    const value = distance > 0 ? Math.min(window.scrollY / distance, 1) : 0;
+    progress.style.setProperty("--scroll-progress", value.toFixed(4));
+    progressFrame = 0;
+  });
+};
 
 const updateHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 12);
@@ -18,7 +35,9 @@ const closeMenu = () => {
 };
 
 updateHeader();
+updateScrollProgress();
 window.addEventListener("scroll", updateHeader, { passive: true });
+window.addEventListener("scroll", updateScrollProgress, { passive: true });
 
 menuToggle?.addEventListener("click", () => {
   const open = menuToggle.getAttribute("aria-expanded") !== "true";
@@ -36,6 +55,10 @@ document.addEventListener("keydown", (event) => {
 
 window.addEventListener("resize", () => {
   if (window.innerWidth > 800) closeMenu();
+});
+
+document.querySelectorAll(".display-title, .about-preview-title, .contact-title, .story-heading, .case-chapter h2").forEach((title) => {
+  title.classList.add("reveal", "reveal-title");
 });
 
 const revealItems = document.querySelectorAll(".reveal");
@@ -68,3 +91,20 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     history.pushState(null, "", selector);
   });
 });
+
+if (!reduceMotion.matches && finePointer.matches) {
+  document.querySelectorAll(".line-link, .contact-email, .wordmark").forEach((target) => {
+    target.classList.add("magnetic-target");
+    target.addEventListener("pointermove", (event) => {
+      const bounds = target.getBoundingClientRect();
+      const x = (event.clientX - bounds.left - bounds.width / 2) * 0.12;
+      const y = (event.clientY - bounds.top - bounds.height / 2) * 0.16;
+      target.style.setProperty("--magnetic-x", `${x.toFixed(2)}px`);
+      target.style.setProperty("--magnetic-y", `${y.toFixed(2)}px`);
+    });
+    target.addEventListener("pointerleave", () => {
+      target.style.removeProperty("--magnetic-x");
+      target.style.removeProperty("--magnetic-y");
+    });
+  });
+}
