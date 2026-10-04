@@ -1,47 +1,46 @@
 document.documentElement.classList.add("js");
 
-const header = document.querySelector(".site-header");
+const header = document.querySelector("[data-header]");
 const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelector(".nav-links");
+const navigation = document.querySelector(".nav-list");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-const setHeaderState = () => {
+const updateHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 12);
 };
 
-setHeaderState();
-window.addEventListener("scroll", setHeaderState, { passive: true });
-
 const closeMenu = () => {
-  if (!menuToggle || !navLinks) return;
+  if (!menuToggle || !navigation) return;
   menuToggle.setAttribute("aria-expanded", "false");
   menuToggle.setAttribute("aria-label", "Open navigation");
-  navLinks.classList.remove("is-open");
+  navigation.classList.remove("is-open");
   document.body.classList.remove("menu-open");
 };
 
+updateHeader();
+window.addEventListener("scroll", updateHeader, { passive: true });
+
 menuToggle?.addEventListener("click", () => {
-  const willOpen = menuToggle.getAttribute("aria-expanded") !== "true";
-  menuToggle.setAttribute("aria-expanded", String(willOpen));
-  menuToggle.setAttribute("aria-label", willOpen ? "Close navigation" : "Open navigation");
-  navLinks?.classList.toggle("is-open", willOpen);
-  document.body.classList.toggle("menu-open", willOpen);
+  const open = menuToggle.getAttribute("aria-expanded") !== "true";
+  menuToggle.setAttribute("aria-expanded", String(open));
+  menuToggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+  navigation?.classList.toggle("is-open", open);
+  document.body.classList.toggle("menu-open", open);
 });
 
-navLinks?.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", closeMenu);
-});
+navigation?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeMenu();
 });
 
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 900) closeMenu();
+  if (window.innerWidth > 800) closeMenu();
 });
 
 const revealItems = document.querySelectorAll(".reveal");
 
-if ("IntersectionObserver" in window) {
+if ("IntersectionObserver" in window && !reduceMotion.matches) {
   const observer = new IntersectionObserver(
     (entries, activeObserver) => {
       entries.forEach((entry) => {
@@ -50,7 +49,7 @@ if ("IntersectionObserver" in window) {
         activeObserver.unobserve(entry.target);
       });
     },
-    { rootMargin: "0px 0px -8%", threshold: 0.12 },
+    { rootMargin: "0px 0px -7%", threshold: 0.1 },
   );
 
   revealItems.forEach((item) => observer.observe(item));
@@ -60,12 +59,12 @@ if ("IntersectionObserver" in window) {
 
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", (event) => {
-    const targetId = anchor.getAttribute("href");
-    if (!targetId || targetId === "#") return;
-    const target = document.querySelector(targetId);
+    const selector = anchor.getAttribute("href");
+    if (!selector || selector === "#") return;
+    const target = document.querySelector(selector);
     if (!target) return;
     event.preventDefault();
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    history.pushState(null, "", targetId);
+    target.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "start" });
+    history.pushState(null, "", selector);
   });
 });
