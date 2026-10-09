@@ -32,4 +32,6 @@ Then open [http://127.0.0.1:4173](http://127.0.0.1:4173).
 
 ## Status
 
-The portfolio is currently prepared for local review. GitHub Pages has not been enabled.
+The portfolio is published with GitHub Pages:
+
+[View the live website](https://denystykhonov26.github.io/denys-portfolio/)
