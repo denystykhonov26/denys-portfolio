@@ -14,8 +14,8 @@
     <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/styles.css?v=2.9">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap">
+    <link rel="stylesheet" href="assets/css/styles.css?v=4.2">
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -27,9 +27,23 @@
         "knowsAbout": ["Web development", "Automation", "AI-assisted solutions", "Python"]
       }
     </script>
-    <script src="assets/js/main.js?v=2.8" defer></script>
+    <script src="assets/js/main.js?v=4.2" defer></script>
   </head>
   <body id="top">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <filter id="liquid" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.008 0.014" numOctaves="3" seed="3" result="n"/>
+        <feDisplacementMap id="disp" in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" result="distorted"/>
+        <feColorMatrix in="distorted" type="matrix" values="0 0 0 1 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="redChannel"/>
+        <feColorMatrix in="distorted" type="matrix" values="0 0 0 0 0  0 0 0 1 0  0 0 0 0 0  0 0 0 1 0" result="greenChannel"/>
+        <feColorMatrix in="distorted" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 1 0  0 0 0 1 0" result="blueChannel"/>
+        <feOffset id="redOffset" in="redChannel" dx="0" dy="0" result="redShift"/>
+        <feOffset id="blueOffset" in="blueChannel" dx="0" dy="0" result="blueShift"/>
+        <feBlend in="redShift" in2="greenChannel" mode="screen" result="redGreen"/>
+        <feBlend in="redGreen" in2="blueShift" mode="screen" result="chromatic"/>
+        <feMerge><feMergeNode in="chromatic"/><feMergeNode in="distorted"/></feMerge>
+      </filter>
+    </svg>
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header" data-header>
@@ -41,7 +55,7 @@
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open navigation">
           <span aria-hidden="true"></span>
         </button>
-        <nav aria-label="Primary navigation">
+        <nav class="nav" aria-label="Primary navigation">
           <ul class="nav-list" id="primary-navigation">
             <li><a class="nav-link" href="projects/index.html">Projects</a></li>
             <li><a class="nav-link" href="about.html">About</a></li>
@@ -65,7 +79,15 @@
           </h1>
 
           <div class="hero-statement">
-            <p class="hero-role hero-enter">Web Development,<br>Automation <span class="serif-amp">&amp;</span> AI-Assisted Solutions.</p>
+            <p class="hero-role hero-title hero-enter hero-kinetic is-kinetic-active" aria-label="Web Development, Automation and AI-Assisted Solutions.">
+              <span class="hero-kinetic-status" aria-hidden="true"><span>Signal input</span><span>Signal locked</span></span>
+              <span class="hero-kinetic-stage" aria-hidden="true">
+                <span class="hero-kinetic-gate"><span class="hero-kinetic-invert"><span>Web Development,</span><span>Automation &amp; AI-Assisted Solutions.</span></span></span>
+                <span class="hero-kinetic-line hero-kinetic-line--one">Web Development,</span>
+                <span class="hero-kinetic-line hero-kinetic-line--two">Automation &amp; AI-Assisted Solutions.</span>
+              </span>
+            </p>
+            <span class="hero-interaction-hint" aria-hidden="true">↳ Move your cursor</span>
             <div class="hero-intro hero-enter">
               <p class="hero-support">Practical digital experiences, from websites to intelligent automation.</p>
               <div class="hero-actions">
@@ -81,7 +103,7 @@
         <div class="shell">
           <header class="editorial-head reveal">
             <p class="section-label">01 / Selected work</p>
-            <h2 class="display-title" id="work-title">Built for real<br><span class="serif-display">use.</span></h2>
+            <h2 class="display-title" id="work-title">Built for real<br>use.</h2>
             <p class="head-note">Two projects with different surfaces and the same aim: making complex work clearer.</p>
           </header>
 
@@ -106,7 +128,7 @@
           <div class="shell automation-grid">
             <div class="automation-copy reveal">
               <p class="project-type">Personal automation / 02</p>
-              <h3 class="project-name project-name--light"><a href="projects/vse-homework-agent.html">VSE Homework<br><span class="serif-display">Agent</span></a></h3>
+              <h3 class="project-name project-name--light"><a href="projects/vse-homework-agent.html">VSE Homework<br>Agent</a></h3>
               <p class="project-description">A Python system that reads university email, extracts assignments and deadlines, and delivers structured Telegram notifications.</p>
               <p class="project-stack">Python · OpenAI API · SQLite · Telegram</p>
               <a class="line-link line-link--light" href="projects/vse-homework-agent.html"><span>Explore the system</span><span aria-hidden="true">↗</span></a>
@@ -155,7 +177,7 @@
         <div class="shell about-preview-grid">
           <p class="section-label reveal">02 / About</p>
           <div class="about-preview-copy reveal">
-            <h2 class="about-preview-title" id="about-preview-title">I like turning repetitive or confusing work into <span class="serif-display">clear digital systems.</span></h2>
+            <h2 class="about-preview-title" id="about-preview-title">I like turning repetitive or confusing work into clear digital systems.</h2>
             <p>I’m Denys, a university student in Prague exploring web development, programming, automation, and practical AI-assisted solutions.</p>
             <a class="line-link" href="about.html"><span>More about me</span><span aria-hidden="true">↗</span></a>
           </div>
@@ -173,7 +195,7 @@
             <span>03 / Contact</span>
             <span>Have an idea worth building?</span>
           </div>
-          <h2 class="contact-title reveal" id="contact-title">Let’s build something<br><span class="serif-display">useful.</span></h2>
+          <h2 class="contact-title reveal" id="contact-title">Let’s build something<br>useful.</h2>
           <div class="contact-row reveal">
             <a class="contact-email" href="mailto:dtihonov283@gmail.com">dtihonov283@gmail.com <span aria-hidden="true">↗</span></a>
             <a class="quiet-link quiet-link--light" href="https://github.com/denystykhonov26" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
